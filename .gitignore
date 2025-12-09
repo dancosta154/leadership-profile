@@ -30,9 +30,9 @@ instance/
 # Environment variables
 .env
 
-# Uploads
-static/uploads/*
-!static/uploads/.gitkeep
+# Uploads - allow PDFs to be committed for portfolio
+# static/uploads/*
+# !static/uploads/.gitkeep
 
 # IDE
 .vscode/

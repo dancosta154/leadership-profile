@@ -141,9 +141,6 @@ def admin_upload():
     
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        # Add timestamp to filename to avoid conflicts
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        filename = f"{timestamp}_{filename}"
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
         
