@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Dan Costa Leadership Portfolio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-page">
+    <nav class="admin-navbar">
+        <div class="container">
+            <a href="{{ url_for('admin_dashboard') }}" class="logo">Admin Dashboard</a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('index') }}">View Site</a></li>
+                <li><a href="{{ url_for('admin_logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                <div class="container">
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            {{ message }}
+                            <button onclick="this.parentElement.remove()" class="close-btn">&times;</button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main class="admin-content">
+        <div class="container">
+            <section class="upload-section">
+                <h2>Upload New Document</h2>
+                <form method="POST" action="{{ url_for('admin_upload') }}" enctype="multipart/form-data" class="upload-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="title">Document Title *</label>
+                            <input type="text" id="title" name="title" required placeholder="e.g., Career Growth Plan">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="category">Category *</label>
+                            <input type="text" id="category" name="category" required placeholder="e.g., Leadership Docs" list="categories">
+                            <datalist id="categories">
+                                <option value="Resume">
+                                <option value="Leadership Docs">
+                                <option value="Career Growth">
+                                <option value="Case Studies">
+                                <option value="Insights Discovery">
+                                <option value="Frameworks">
+                                <option value="Other">
+                            </datalist>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" rows="3" placeholder="Brief description of the document (optional)"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="file">File *</label>
+                        <input type="file" id="file" name="file" required>
+                        <small>Allowed formats: PDF, DOC, DOCX, TXT, PNG, JPG, JPEG (Max 16MB)</small>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" name="is_featured">
+                            Mark as Featured Document
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Upload Document</button>
+                </form>
+            </section>
+
+            <section class="documents-list-section">
+                <h2>All Documents ({{ documents|length }})</h2>
+                
+                {% if documents %}
+                <div class="admin-documents-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Uploaded</th>
+                                <th>Featured</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doc in documents %}
+                            <tr>
+                                <td>
+                                    <strong>{{ doc.title }}</strong>
+                                    {% if doc.description %}
+                                    <br><small>{{ doc.description[:100] }}{% if doc.description|length > 100 %}...{% endif %}</small>
+                                    {% endif %}
+                                </td>
+                                <td><span class="category-tag">{{ doc.category }}</span></td>
+                                <td>{{ doc.upload_date.strftime('%Y-%m-%d') }}</td>
+                                <td>
+                                    {% if doc.is_featured %}
+                                    <span class="badge badge-success">Yes</span>
+                                    {% else %}
+                                    <span class="badge badge-secondary">No</span>
+                                    {% endif %}
+                                </td>
+                                <td class="actions-cell">
+                                    <button onclick="toggleEditForm({{ doc.id }})" class="btn btn-small btn-secondary">Edit</button>
+                                    <a href="{{ url_for('download_document', doc_id=doc.id) }}" class="btn btn-small btn-info">Download</a>
+                                    <form method="POST" action="{{ url_for('admin_delete', doc_id=doc.id) }}" style="display:inline;" 
+                                          onsubmit="return confirm('Are you sure you want to delete this document?');">
+                                        <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr id="edit-form-{{ doc.id }}" class="edit-form-row" style="display:none;">
+                                <td colspan="5">
+                                    <form method="POST" action="{{ url_for('admin_edit', doc_id=doc.id) }}" class="inline-edit-form">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Title</label>
+                                                <input type="text" name="title" value="{{ doc.title }}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Category</label>
+                                                <input type="text" name="category" value="{{ doc.category }}" required list="categories">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Description</label>
+                                            <textarea name="description" rows="2">{{ doc.description or '' }}</textarea>
+                                        </div>
+                                        <div class="form-group checkbox-group">
+                                            <label>
+                                                <input type="checkbox" name="is_featured" {% if doc.is_featured %}checked{% endif %}>
+                                                Featured
+                                            </label>
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="submit" class="btn btn-primary btn-small">Save Changes</button>
+                                            <button type="button" onclick="toggleEditForm({{ doc.id }})" class="btn btn-secondary btn-small">Cancel</button>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <p>No documents uploaded yet. Use the form above to upload your first document.</p>
+                </div>
+                {% endif %}
+            </section>
+        </div>
+    </main>
+
+    <script>
+        function toggleEditForm(docId) {
+            const editRow = document.getElementById('edit-form-' + docId);
+            if (editRow.style.display === 'none') {
+                editRow.style.display = 'table-row';
+            } else {
+                editRow.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
+

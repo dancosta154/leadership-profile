@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}About Me - Dan Costa{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1>Dan Costa</h1>
+            <p class="tagline">Leadership Development | Higher Education Consulting | Product Management</p>
+        </div>
+    </div>
+</section>
+
+<section class="about-section">
+    <div class="container">
+        <h2>About Me</h2>
+        <div class="about-grid">
+            <div class="about-text">
+                <ul class="about-list">
+                    <li>
+                        <strong>Location:</strong> I grew up in Framingham, MA and now live in Scarborough, ME
+                    </li>
+                    <li>
+                        <strong>Personal Life:</strong> Girlfriend (Alexus) and dog (Lucas – he's an Irish Setter)
+                    </li>
+                    <li>
+                        <strong>Education:</strong> Went to Arizona State University (Criminal Justice)
+                    </li>
+                    <li>
+                        <strong>Career:</strong> I focus on aligning people, process, and priorities to solve meaningful problems. I’ve led teams, rebuilt workflows, and created structure that turns chaos into coordination. I’m drawn to work where the impact is real and measurable
+                    </li>
+                    <li>
+                        <strong>What I do for Fun:</strong> Friends, Travel, Hiking, Fly Fishing, Camping
+                    </li>
+                    <li>
+                        <strong>One Passion at Work:</strong> I love simplifying complexity — breaking down tough problems so they're solvable at the root, not just patched at the surface
+                    </li>
+                    <li>
+                        <strong>What People May Misunderstand About Me:</strong> I may come across as serious in the moment, but I'm always open and approachable
+                    </li>
+                    <li>
+                        <strong>How I like to Communicate:</strong> Slack, Zoom, Email as last resort!
+                    </li>
+                </ul>
+            </div>
+            <div class="about-image">
+                <div class="photo-collage">
+                    <img src="{{ url_for('static', filename='images/profile-photo.jpg') }}" 
+                         alt="Dan Costa" 
+                         class="photo-main">
+                    <img src="{{ url_for('static', filename='images/lucas.jpg') }}" 
+                         alt="Lucas - Dan's Irish Setter" 
+                         class="photo-accent">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="container">
+        <h2>Explore More</h2>
+        <div class="cta-grid">
+            <a href="{{ url_for('work_with_me') }}" class="cta-card">
+                <h3>Work With Dan</h3>
+                <p>Learn about my working style and how we can collaborate effectively</p>
+            </a>
+            <a href="{{ url_for('insights') }}" class="cta-card">
+                <h3>Insights Discovery</h3>
+                <p>Understand my personality profile and communication preferences</p>
+            </a>
+            <a href="{{ url_for('documents') }}" class="cta-card">
+                <h3>Documents</h3>
+                <p>Browse my leadership documents, frameworks, and resources</p>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dan Costa - Leadership Portfolio{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="logo">Dan Costa</a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">About Me</a></li>
+                <li><a href="{{ url_for('work_with_me') }}" class="{% if request.endpoint == 'work_with_me' %}active{% endif %}">Work With Dan</a></li>
+                <li><a href="{{ url_for('insights') }}" class="{% if request.endpoint == 'insights' %}active{% endif %}">Insights Discovery</a></li>
+                <li><a href="{{ url_for('documents') }}" class="{% if request.endpoint == 'documents' %}active{% endif %}">Documents</a></li>
+                {% if session.get('admin_logged_in') %}
+                <li><a href="{{ url_for('admin_dashboard') }}" class="admin-link">Admin</a></li>
+                <li><a href="{{ url_for('admin_logout') }}" class="admin-link">Logout</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                <div class="container">
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            {{ message }}
+                            <button onclick="this.parentElement.remove()" class="close-btn">&times;</button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; {{ current_year or 2024 }} Dan Costa. All rights reserved.</p>
+            <p class="footer-note">Leadership Portfolio{% if not session.get('admin_logged_in') %} | <a href="{{ url_for('admin_login') }}" style="color: #c9a961;">Admin Login</a>{% endif %}</p>
+        </div>
+    </footer>
+</body>
+</html>
+

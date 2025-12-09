@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}How to Work With Dan{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>How to Work With Dan</h1>
+        <p class="subtitle">Communication preferences, working style, and collaboration best practices</p>
+    </div>
+</section>
+
+<section class="content-section">
+    <div class="container">
+        <div class="work-style-grid">
+            <div class="work-style-card card-accent-1">
+                <h2>Communication Preferences</h2>
+                <ul>
+                    <li><strong>Best:</strong> Slack for quick questions and updates</li>
+                    <li><strong>Good:</strong> Zoom for discussions and collaboration</li>
+                    <li><strong>Last Resort:</strong> Email (I prefer real-time communication)</li>
+                    <li><strong>Response Time:</strong> I aim to respond within 2-4 hours during work hours</li>
+                    <li><strong>Async Work:</strong> I appreciate detailed context in written form for asynchronous decisions</li>
+                </ul>
+            </div>
+
+            <div class="work-style-card card-accent-2">
+                <h2>My Working Style</h2>
+                <ul>
+                    <li><strong>Problem-Solving:</strong> I dig deep to understand root causes, not just symptoms</li>
+                    <li><strong>Decision-Making:</strong> Data-informed but willing to make judgment calls when needed</li>
+                    <li><strong>Collaboration:</strong> I value diverse perspectives, encourage healthy debate, and work hard to create psychological safety so everyone feels comfortable speaking up</li>
+                    <li><strong>Flexibility:</strong> I adapt my approach based on the team and situation</li>
+                </ul>
+            </div>
+
+            <div class="work-style-card card-accent-1">
+                <h2>What to Expect From Me</h2>
+                <ul>
+                    <li><strong>Transparency:</strong> I'll be honest about challenges and limitations</li>
+                    <li><strong>Directness:</strong> I value clear, straightforward communication</li>
+                    <li><strong>Follow-Through:</strong> If I commit to something, I'll deliver or communicate early if issues arise</li>
+                    <li><strong>Growth Mindset:</strong> I prioritize growth and learning and value constructive feedback</li>
+                    <li><strong>Approachability:</strong> Even if I seem serious, I'm always open to questions and conversations</li>
+                </ul>
+            </div>
+
+            <div class="work-style-card card-accent-2">
+                <h2>How You Can Help Me</h2>
+                <ul>
+                    <li><strong>Context:</strong> Give me background on problems and decisions</li>
+                    <li><strong>Clarity:</strong> Be specific about what you need and by when</li>
+                    <li><strong>Questions:</strong> Don't hesitate to ask clarifying questions</li>
+                    <li><strong>Feedback:</strong> Let me know what's working and what's not</li>
+                    <li><strong>Collaboration:</strong> Bring ideas and solutions, not just problems</li>
+                </ul>
+            </div>
+
+            <div class="work-style-card card-accent-1">
+                <h2>Meeting Preferences</h2>
+                <ul>
+                    <li><strong>Agendas:</strong> I appreciate clear agendas sent in advance</li>
+                    <li><strong>Punctuality:</strong> I start and end on time</li>
+                    <li><strong>Preparation:</strong> I do my homework before meetings</li>
+                    <li><strong>Action Items:</strong> I like clear next steps and owners</li>
+                    <li><strong>Efficiency:</strong> If it can be an email or Slack thread, let's do that instead</li>
+                </ul>
+            </div>
+
+            <div class="work-style-card card-accent-2">
+                <h2>My Values at Work</h2>
+                <ul>
+                    <li><strong>Simplicity:</strong> Making complex things simple and accessible</li>
+                    <li><strong>Excellence:</strong> Doing quality work that makes an impact</li>
+                    <li><strong>Growth:</strong> Continuous learning and development</li>
+                    <li><strong>Collaboration:</strong> Building strong, effective teams</li>
+                    <li><strong>Integrity:</strong> Doing the right thing, even when it's hard</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-box">
+            <h2>Want to Learn More?</h2>
+            <p>Check out my Insights Discovery profile or browse my leadership documents</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('insights') }}" class="btn btn-primary">Insights Discovery</a>
+                <a href="{{ url_for('documents') }}" class="btn btn-secondary">View Documents</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

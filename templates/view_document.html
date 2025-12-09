@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}{{ document.title }} - Dan Costa{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>{{ document.title }}</h1>
+        <p class="subtitle">
+            <span class="category-tag">{{ document.category }}</span>
+            <span style="color: var(--accent-gold); margin-left: 1rem;">{{ document.upload_date.strftime('%B %Y') }}</span>
+        </p>
+    </div>
+</section>
+
+<section class="content-section">
+    <div class="container">
+        <div class="document-viewer-header">
+            {% if document.description %}
+            <p class="document-description">{{ document.description }}</p>
+            {% endif %}
+            
+            <div class="document-actions-bar">
+                <a href="{{ url_for('download_document', doc_id=document.id) }}" 
+                   class="btn btn-primary">
+                    📥 Download {{ document.file_extension.upper() }}
+                </a>
+                <a href="{{ url_for('documents') }}" 
+                   class="btn btn-secondary">
+                    ← Back to Documents
+                </a>
+            </div>
+        </div>
+
+        <div class="document-viewer">
+            {% if document.file_extension == 'pdf' %}
+                <!-- PDF Viewer -->
+                <div class="pdf-viewer">
+                    <iframe src="{{ url_for('serve_document', doc_id=document.id) }}" 
+                            type="application/pdf"
+                            width="100%" 
+                            height="800px"
+                            style="border: none; border-radius: 8px; box-shadow: var(--shadow-md);">
+                    </iframe>
+                    <p class="viewer-note">
+                        <small>If the PDF doesn't display, <a href="{{ url_for('download_document', doc_id=document.id) }}">download it here</a>.</small>
+                    </p>
+                </div>
+            
+            {% elif document.file_extension in ['png', 'jpg', 'jpeg', 'gif', 'webp'] %}
+                <!-- Image Viewer -->
+                <div class="image-viewer">
+                    <img src="{{ url_for('serve_document', doc_id=document.id) }}" 
+                         alt="{{ document.title }}"
+                         style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: var(--shadow-md);">
+                </div>
+            
+            {% elif document.file_extension == 'txt' %}
+                <!-- Text File Viewer -->
+                <div class="text-viewer">
+                    <iframe src="{{ url_for('serve_document', doc_id=document.id) }}" 
+                            width="100%" 
+                            height="600px"
+                            style="border: 1px solid var(--border-color); border-radius: 8px; background: white; padding: 20px;">
+                    </iframe>
+                </div>
+            
+            {% elif document.file_extension in ['doc', 'docx'] %}
+                <!-- Word Document - Can't preview directly -->
+                <div class="unsupported-viewer">
+                    <div class="viewer-placeholder">
+                        <div class="placeholder-icon">📄</div>
+                        <h3>{{ document.original_filename }}</h3>
+                        <p>Word documents cannot be previewed in the browser.</p>
+                        <p>Click the download button above to open this document.</p>
+                        <a href="{{ url_for('download_document', doc_id=document.id) }}" 
+                           class="btn btn-primary btn-large">
+                            Download Document
+                        </a>
+                    </div>
+                </div>
+            
+            {% else %}
+                <!-- Unsupported Format -->
+                <div class="unsupported-viewer">
+                    <div class="viewer-placeholder">
+                        <div class="placeholder-icon">📎</div>
+                        <h3>{{ document.original_filename }}</h3>
+                        <p>This file type cannot be previewed in the browser.</p>
+                        <p>Click the download button above to view this document.</p>
+                        <a href="{{ url_for('download_document', doc_id=document.id) }}" 
+                           class="btn btn-primary btn-large">
+                            Download Document
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="document-metadata">
+            <h3>Document Information</h3>
+            <ul class="metadata-list">
+                <li><strong>Title:</strong> {{ document.title }}</li>
+                <li><strong>Category:</strong> {{ document.category }}</li>
+                <li><strong>File Type:</strong> {{ document.file_extension.upper() }}</li>
+                <li><strong>Uploaded:</strong> {{ document.upload_date.strftime('%B %d, %Y') }}</li>
+                {% if document.is_featured %}
+                <li><strong>Status:</strong> <span class="featured-badge">Featured Document</span></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

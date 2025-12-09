@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Documents - Dan Costa{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Leadership Documents</h1>
+        <p class="subtitle">Frameworks, plans, and resources I've developed</p>
+    </div>
+</section>
+
+<section class="documents-section">
+    <div class="container">
+        <div class="documents-filter">
+            <label for="category-filter">Filter by Category:</label>
+            <div class="filter-buttons">
+                <a href="{{ url_for('documents') }}?category=all" 
+                   class="filter-btn {% if current_category == 'all' %}active{% endif %}">
+                    All Documents
+                </a>
+                {% for category in categories %}
+                <a href="{{ url_for('documents') }}?category={{ category }}" 
+                   class="filter-btn {% if current_category == category %}active{% endif %}">
+                    {{ category }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if documents %}
+        <div class="documents-grid">
+            {% for doc in documents %}
+            <div class="document-card {% if doc.is_featured %}featured{% endif %}">
+                {% if doc.is_featured %}
+                <span class="featured-badge">Featured</span>
+                {% endif %}
+                
+                <div class="document-icon">
+                    {% if doc.file_extension == 'pdf' %}
+                    📄
+                    {% elif doc.file_extension in ['doc', 'docx'] %}
+                    📝
+                    {% elif doc.file_extension in ['png', 'jpg', 'jpeg'] %}
+                    🖼️
+                    {% else %}
+                    📎
+                    {% endif %}
+                </div>
+                
+                <h3>{{ doc.title }}</h3>
+                
+                <div class="document-meta">
+                    <span class="category-tag">{{ doc.category }}</span>
+                    <span class="upload-date">{{ doc.upload_date.strftime('%B %Y') }}</span>
+                </div>
+                
+                {% if doc.description %}
+                <p class="document-description">{{ doc.description }}</p>
+                {% endif %}
+                
+                <div class="document-actions">
+                    <a href="{{ url_for('view_document', doc_id=doc.id) }}" 
+                       class="btn btn-primary btn-small">
+                        View
+                    </a>
+                    <a href="{{ url_for('download_document', doc_id=doc.id) }}" 
+                       class="btn btn-secondary btn-small">
+                        Download
+                    </a>
+                    <span class="file-type">{{ doc.file_extension.upper() }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <h3>No Documents Yet</h3>
+            <p>Documents will appear here once they are uploaded.</p>
+            {% if session.get('admin_logged_in') %}
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary">
+                Upload Documents
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% if session.get('admin_logged_in') %}
+<section class="admin-quick-actions">
+    <div class="container">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+            Manage Documents in Admin Panel
+        </a>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+
